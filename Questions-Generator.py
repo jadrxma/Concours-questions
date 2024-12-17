@@ -63,6 +63,17 @@ niveau_difficulte = st.selectbox(
     "Sélectionnez le niveau de difficulté :",
     ["Facile", "Modéré", "Difficile", "Extrême"]
 )
+st.markdown(
+    """
+    <style>
+        /* Hide Streamlit branding elements */
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
+        .viewerBadge_container__1QSob {display: none;} /* Streamlit watermark */
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Initialize session state to persist data
 if "question_data" not in st.session_state:
