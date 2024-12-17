@@ -7,6 +7,20 @@ import random
 st.markdown(
     """
     <style>
+        /* Hide the Streamlit footer and badges */
+        footer {visibility: hidden; }
+        .viewerBadge_container__1QSob { display: none !important; } /* Streamlit watermark */
+        .st-emotion-cache-1v0mbdj { display: none !important; } /* Remove 'Created by' badges */
+        header { visibility: hidden; } /* Hide Streamlit header */
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+st.markdown(
+    """
+    <style>
     /* General Page Styling - Light Mode Only */
     body {
         color: #333333;
