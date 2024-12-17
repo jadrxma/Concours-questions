@@ -3,14 +3,14 @@ import openai
 import json
 import random
 
-# Inject CSS for enhanced styling
+# Inject CSS for enhanced styling and Streamlit branding removal
 st.markdown(
     """
     <style>
-    /* General Page Styling */
+    /* General Page Styling - Light Mode Only */
     body {
         color: #333333;
-        background-color: #F7F9FC;
+        background-color: #F7F9FC !important;
     }
 
     /* Title Styling */
@@ -28,17 +28,13 @@ st.markdown(
     }
     .stSidebar h2, .stSidebar h3 {
         color: white !important;
-        font-size: 1.3em;
-    }
-    .stSelectbox, .stButton {
-        color: #4A6FA5;
     }
 
     /* Buttons Styling */
     .stButton > button {
         background-color: #4A6FA5 !important;
         color: white !important;
-        border-radius: 8px !important;
+        border-radius: 8px;
         box-shadow: 2px 2px 5px #a0b5d8 !important;
         font-size: 1.1em;
         font-weight: bold;
@@ -46,7 +42,6 @@ st.markdown(
     }
     .stButton > button:hover {
         background-color: #3D5A80 !important;
-        box-shadow: 3px 3px 6px #7a97c9 !important;
     }
 
     /* Radio Button Styling */
@@ -56,7 +51,7 @@ st.markdown(
         margin-left: 10px;
     }
     
-    /* Success Message Styling */
+    /* Success and Error Styling */
     .stSuccess {
         background-color: #D4EDDA !important;
         color: #155724 !important;
@@ -64,8 +59,6 @@ st.markdown(
         padding: 10px;
         text-align: center;
     }
-
-    /* Error Message Styling */
     .stError {
         background-color: #F8D7DA !important;
         color: #721C24 !important;
@@ -82,11 +75,17 @@ st.markdown(
         margin-top: 20px;
     }
 
-    /* Footer Styling */
-    hr {
-        border-top: 2px solid #4A6FA5;
-        margin: 20px 0;
+    /* Remove Streamlit Branding */
+    footer {visibility: hidden;}
+    .viewerBadge_container__1QSob {display: none;}
+    header {visibility: hidden;}
+
+    /* Disable Dark Mode Adaptation */
+    [data-theme="dark"] {
+        background-color: #F7F9FC !important;
+        color: #333333 !important;
     }
+
     </style>
     """,
     unsafe_allow_html=True
@@ -145,8 +144,9 @@ if st.button("🔍 Générer une question"):
         except Exception as e:
             st.error(f"Une erreur s'est produite : {e}")
 
-# Display the question
+# Display the question and difficulty
 if st.session_state["question_data"]:
+    st.markdown(f"### **Niveau de Difficulté : {niveau_difficulte}**")
     question_data = st.session_state["question_data"]
     st.markdown(f"### **{question_data['question']}**")
 
