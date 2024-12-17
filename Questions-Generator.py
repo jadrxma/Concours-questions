@@ -81,7 +81,7 @@ if st.button("🔍 Générer une question"):
 
         try:
             response = openai.ChatCompletion.create(
-                model="gpt-4",
+                model="gpt-4o",
                 messages=[
                     {"role": "system", "content": "Vous êtes un expert en médecine qui génère des questions diagnostiques médicales."},
                     {"role": "user", "content": prompt}
