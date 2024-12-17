@@ -3,21 +3,7 @@ import openai
 import json
 import random
 
-# Inject CSS for enhanced styling and Streamlit branding removal
-st.markdown(
-    """
-    <style>
-        /* Hide the Streamlit footer and badges */
-        footer {visibility: hidden; }
-        .viewerBadge_container__1QSob { display: none !important; } /* Streamlit watermark */
-        .st-emotion-cache-1v0mbdj { display: none !important; } /* Remove 'Created by' badges */
-        header { visibility: hidden; } /* Hide Streamlit header */
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
+# Inject CSS for enhanced styling and to hide Streamlit branding
 st.markdown(
     """
     <style>
@@ -39,7 +25,7 @@ st.markdown(
     .stButton > button {
         background-color: #4A6FA5 !important;
         color: white !important;
-        border-radius: 8px;
+        border-radius: 8px !important;
         box-shadow: 2px 2px 5px #a0b5d8 !important;
         font-size: 1.1em;
         font-weight: bold;
@@ -56,10 +42,11 @@ st.markdown(
         margin-left: 10px;
     }
 
-    /* Remove Streamlit Branding */
-    footer {visibility: hidden;}
-    .viewerBadge_container__1QSob {display: none;}
-    header {visibility: hidden;}
+    /* Remove Streamlit Branding and Footer */
+    footer {visibility: hidden; }
+    .viewerBadge_container__1QSob { display: none !important; } /* Streamlit watermark */
+    .st-emotion-cache-1v0mbdj { display: none !important; } /* 'Created by' badges */
+    header { visibility: hidden; } /* Hide Streamlit header */
     </style>
     """,
     unsafe_allow_html=True
@@ -77,17 +64,6 @@ niveau_difficulte = st.selectbox(
     "Sélectionnez le niveau de difficulté :",
     ["Facile", "Modéré", "Difficile", "Extrême"]
 )
-st.markdown(
-    """
-    <style>
-        /* Hide Streamlit branding elements */
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
-        .viewerBadge_container__1QSob {display: none;} /* Streamlit watermark */
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 # Initialize session state to persist data
 if "question_data" not in st.session_state:
@@ -100,13 +76,13 @@ if st.button("🔍 Générer une question"):
     with st.spinner("Génération de la question en cours..."):
         prompt = (
             f"Générez une question diagnostique médicale de niveau {niveau_difficulte.lower()} sous format JSON. "
-            "Le format de sortie doit uniquement être en JSON (Don't include '''json ''' avec les clés suivantes: 'question', 'options' (liste), et 'correct_answer'. "
+            "Le format de sortie doit uniquement être en JSON avec les clés suivantes: 'question', 'options' (liste), et 'correct_answer'. "
             "Assurez-vous que la bonne réponse est aléatoirement choisie parmi les options."
         )
 
         try:
             response = openai.ChatCompletion.create(
-                model="gpt-4o",
+                model="gpt-4",
                 messages=[
                     {"role": "system", "content": "Vous êtes un expert en médecine qui génère des questions diagnostiques médicales."},
                     {"role": "user", "content": prompt}
