@@ -3,6 +3,73 @@ import openai
 import json
 import random
 
+# Inject CSS for styling
+st.markdown(
+    """
+    <style>
+    /* General Styling */
+    body {
+        color: #333333;
+        background-color: #BCC4DB;
+    }
+
+    /* Streamlit Title */
+    .stApp h1 {
+        color: #7880B5;
+        text-align: center;
+        font-size: 2.5em;
+        text-shadow: 2px 2px 4px #a0a3c8;
+    }
+
+    /* Sidebar Styling */
+    .stSidebar {
+        background-color: #7880B5 !important;
+        color: white !important;
+    }
+    .stSidebar h2, .stSidebar h3 {
+        color: white !important;
+    }
+
+    /* Buttons Styling */
+    .stButton > button {
+        background-color: #7880B5 !important;
+        color: white !important;
+        border-radius: 8px !important;
+        box-shadow: 3px 3px 6px #5f658c !important;
+        font-size: 1em;
+        padding: 0.5em 1.2em;
+    }
+    .stButton > button:hover {
+        background-color: #5f658c !important;
+        box-shadow: 4px 4px 8px #4a4e6e !important;
+    }
+
+    /* Question Section */
+    .stMarkdown h2 {
+        color: #333333;
+    }
+
+    /* Radio Button Styling */
+    .stRadio label {
+        font-size: 1.1em;
+        color: #333333;
+    }
+
+    /* Success and Error Styling */
+    .stSuccess, .stError {
+        font-weight: bold;
+        text-align: center;
+    }
+
+    /* Footer Styling */
+    hr {
+        border-top: 2px solid #7880B5;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Configurez votre clé API OpenAI depuis les secrets de Streamlit
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
