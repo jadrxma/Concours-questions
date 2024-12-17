@@ -3,81 +3,103 @@ import openai
 import json
 import random
 
-# Inject CSS for styling
+# Inject CSS for enhanced styling
 st.markdown(
     """
     <style>
-    /* General Styling */
+    /* General Page Styling */
     body {
         color: #333333;
-        background-color: #BCC4DB;
+        background-color: #F7F9FC;
     }
 
-    /* Streamlit Title */
+    /* Title Styling */
     .stApp h1 {
-        color: #7880B5;
+        color: #4A6FA5;
         text-align: center;
-        font-size: 2.5em;
-        text-shadow: 2px 2px 4px #a0a3c8;
+        font-size: 3em;
+        text-shadow: 1px 1px 2px #b8cbe3;
     }
 
     /* Sidebar Styling */
     .stSidebar {
-        background-color: #7880B5 !important;
+        background-color: #4A6FA5 !important;
         color: white !important;
     }
     .stSidebar h2, .stSidebar h3 {
         color: white !important;
+        font-size: 1.3em;
+    }
+    .stSelectbox, .stButton {
+        color: #4A6FA5;
     }
 
     /* Buttons Styling */
     .stButton > button {
-        background-color: #7880B5 !important;
+        background-color: #4A6FA5 !important;
         color: white !important;
         border-radius: 8px !important;
-        box-shadow: 3px 3px 6px #5f658c !important;
-        font-size: 1em;
-        padding: 0.5em 1.2em;
+        box-shadow: 2px 2px 5px #a0b5d8 !important;
+        font-size: 1.1em;
+        font-weight: bold;
+        padding: 0.6em 1.5em;
     }
     .stButton > button:hover {
-        background-color: #5f658c !important;
-        box-shadow: 4px 4px 8px #4a4e6e !important;
-    }
-
-    /* Question Section */
-    .stMarkdown h2 {
-        color: #333333;
+        background-color: #3D5A80 !important;
+        box-shadow: 3px 3px 6px #7a97c9 !important;
     }
 
     /* Radio Button Styling */
     .stRadio label {
         font-size: 1.1em;
-        color: #333333;
+        color: #3D5A80;
+        margin-left: 10px;
+    }
+    
+    /* Success Message Styling */
+    .stSuccess {
+        background-color: #D4EDDA !important;
+        color: #155724 !important;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
     }
 
-    /* Success and Error Styling */
-    .stSuccess, .stError {
-        font-weight: bold;
+    /* Error Message Styling */
+    .stError {
+        background-color: #F8D7DA !important;
+        color: #721C24 !important;
+        border-radius: 8px;
+        padding: 10px;
         text-align: center;
+    }
+
+    /* Question Section Styling */
+    .stMarkdown h2 {
+        color: #3D5A80;
+        font-size: 1.5em;
+        text-align: center;
+        margin-top: 20px;
     }
 
     /* Footer Styling */
     hr {
-        border-top: 2px solid #7880B5;
+        border-top: 2px solid #4A6FA5;
+        margin: 20px 0;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Configurez votre clé API OpenAI depuis les secrets de Streamlit
+# Configure your OpenAI API key
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-# Application Streamlit
-st.title("Générateur de Questions Diagnostiques Médicales")
+# Streamlit Application
+st.title("🩺 Générateur de Questions Diagnostiques Médicales")
 
-# Barre latérale pour sélectionner la difficulté
-st.sidebar.header("Paramètres")
+# Sidebar for Difficulty Selection
+st.sidebar.header("⚙️ Paramètres")
 niveau_difficulte = st.sidebar.selectbox(
     "Sélectionnez le niveau de difficulté :",
     ["Facile", "Modéré", "Difficile", "Extrême"]
@@ -89,10 +111,9 @@ if "question_data" not in st.session_state:
 if "selected_option" not in st.session_state:
     st.session_state["selected_option"] = None
 
-# Générer une question diagnostique
-if st.button("Générer une question"):
+# Generate a diagnostic question
+if st.button("🔍 Générer une question"):
     with st.spinner("Génération de la question en cours..."):
-        # Prompt pour générer des questions diagnostiques en format JSON
         prompt = (
             f"Générez une question diagnostique médicale de niveau {niveau_difficulte.lower()} sous format JSON. "
             "Le format de sortie doit uniquement être en JSON avec les clés suivantes: 'question', 'options' (liste), et 'correct_answer'. "
@@ -111,10 +132,9 @@ if st.button("Générer une question"):
             )
 
             question_json_str = response["choices"][0]["message"]["content"].strip()
-            # Parse JSON response
             question_data = json.loads(question_json_str)
 
-            # Randomize the correct answer from the given options
+            # Randomize correct answer
             if "options" in question_data and question_data["options"]:
                 question_data["correct_answer"] = random.choice(question_data["options"])
 
@@ -125,30 +145,29 @@ if st.button("Générer une question"):
         except Exception as e:
             st.error(f"Une erreur s'est produite : {e}")
 
-# Display the question and options if available
+# Display the question
 if st.session_state["question_data"]:
     question_data = st.session_state["question_data"]
-    st.write(f"**{question_data['question']}**")
+    st.markdown(f"### **{question_data['question']}**")
 
     options = question_data.get("options", [])
     correct_answer = question_data.get("correct_answer", None)
 
     if options:
-        # Persist the selected option in session state
         st.session_state["selected_option"] = st.radio(
             "Choisissez votre réponse :",
             options,
-            key="options_radio",
             index=options.index(st.session_state["selected_option"]) if st.session_state["selected_option"] in options else 0,
         )
 
-        if st.button("Valider votre réponse"):
+        if st.button("✅ Valider votre réponse"):
             if correct_answer and st.session_state["selected_option"] == correct_answer:
-                st.success("Bonne réponse !")
+                st.success("🎉 Bonne réponse !")
             else:
-                st.error(f"Mauvaise réponse. La bonne réponse est : {correct_answer}")
+                st.error(f"❌ Mauvaise réponse. La bonne réponse est : {correct_answer}")
     else:
-        st.warning("Aucune option n'a été trouvée dans la question générée. Veuillez réessayer.")
+        st.warning("Aucune option trouvée dans la question générée. Veuillez réessayer.")
 
-# Pied de page
+# Footer
 st.markdown("---")
+st.markdown("💡 *Améliorez vos compétences diagnostiques avec des questions adaptées à votre niveau.*")
