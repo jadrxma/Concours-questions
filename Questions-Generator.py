@@ -21,15 +21,6 @@ st.markdown(
         text-shadow: 1px 1px 2px #b8cbe3;
     }
 
-    /* Sidebar Styling */
-    .stSidebar {
-        background-color: #4A6FA5 !important;
-        color: white !important;
-    }
-    .stSidebar h2, .stSidebar h3 {
-        color: white !important;
-    }
-
     /* Buttons Styling */
     .stButton > button {
         background-color: #4A6FA5 !important;
@@ -50,42 +41,11 @@ st.markdown(
         color: #3D5A80;
         margin-left: 10px;
     }
-    
-    /* Success and Error Styling */
-    .stSuccess {
-        background-color: #D4EDDA !important;
-        color: #155724 !important;
-        border-radius: 8px;
-        padding: 10px;
-        text-align: center;
-    }
-    .stError {
-        background-color: #F8D7DA !important;
-        color: #721C24 !important;
-        border-radius: 8px;
-        padding: 10px;
-        text-align: center;
-    }
-
-    /* Question Section Styling */
-    .stMarkdown h2 {
-        color: #3D5A80;
-        font-size: 1.5em;
-        text-align: center;
-        margin-top: 20px;
-    }
 
     /* Remove Streamlit Branding */
     footer {visibility: hidden;}
     .viewerBadge_container__1QSob {display: none;}
     header {visibility: hidden;}
-
-    /* Disable Dark Mode Adaptation */
-    [data-theme="dark"] {
-        background-color: #F7F9FC !important;
-        color: #333333 !important;
-    }
-
     </style>
     """,
     unsafe_allow_html=True
@@ -97,9 +57,9 @@ openai.api_key = st.secrets["OPENAI_API_KEY"]
 # Streamlit Application
 st.title("🩺 Générateur de Questions Diagnostiques Médicales")
 
-# Sidebar for Difficulty Selection
-st.sidebar.header("⚙️ Paramètres")
-niveau_difficulte = st.sidebar.selectbox(
+# Move "Paramètres" to Main Page
+st.header("⚙️ Paramètres")
+niveau_difficulte = st.selectbox(
     "Sélectionnez le niveau de difficulté :",
     ["Facile", "Modéré", "Difficile", "Extrême"]
 )
