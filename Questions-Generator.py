@@ -77,7 +77,7 @@ if st.button("🔍 Générer une question"):
         prompt = (
             f"Générez une question diagnostique médicale de niveau {niveau_difficulte.lower()} sous format JSON. "
             "Le format de sortie doit uniquement être en JSON (Don't include '''json ''') avec les clés suivantes: 'question', 'options' (liste), et 'correct_answer'. "
-            "Assurez-vous que la bonne réponse est aléatoirement choisie parmi les options."
+            "Assurez-vous que la bonne réponse est aléatoirement choisie parmi les options,  mais en anglais."
         )
 
         try:
